@@ -8,25 +8,23 @@ from ttkbootstrap.style import Colors
 from ttkbootstrap.scrolled import ScrolledFrame
 from imagens import *
 from interface import *
+import random
 
 
 
 
 class TelaPadrao:
     def __init__(self):
-        self.rootPadrao = tb.Window(themename='morph')
+        self.rootPadrao = tb.Window(themename='cerculean')
         self.rootPadrao.title('Sistema de Chamados')
         self.rootPadrao.state('zoomed')
-        #self.rootPadrao.rowconfigure(0, weight=1)
         self.rootPadrao.columnconfigure(0, weight=1)
-        
-        #self.rootPadrao.rowconfigure(3, weight=1)
         
         
         
         # CABEÇALHO
         # Logo
-        imagem1= Image.open("sis_logo.png").resize((45,35))
+        imagem1= Image.open("C:/Users/ferna/sistema_chamados/imgs/sis_logo.png").resize((45,35))
         logoIM =ImageTk.PhotoImage(imagem1)
         
         # Frame Pirncipal
@@ -44,17 +42,32 @@ class TelaPadrao:
         self.notebook.add(rootFR, image=logoIM)
         
         # COLUMN 0
-        opcoesFR = tb.Labelframe(rootFR, text='Menu')
+        opcoesFR = tb.Labelframe(rootFR, text='Chamados')
         opcoesFR.grid(column=0, row=2, sticky='NSEW', padx=20, pady=50)
         opcoesFR.columnconfigure(0, weight=1)
-        #opcoesFR.rowconfigure(0, weight=1)
-        #opcoesFR.columnconfigure(1, weight=1)
-        chamadosLB = tb.Checkbutton(opcoesFR, bootstyle='default-toolbutton', text='Visualizar Chamados')
-        chamadosLB.grid(row=0, column=0, sticky='NEW', pady=5)
         
-        criarLB = tb.Checkbutton(opcoesFR, bootstyle='default-toolbutton', text='Criar Chamados')
-        criarLB.grid(row=1, column=0, sticky='NEW')
-        #criarLB.config(font=('Calibri', 12))
+        #Chamados
+        colunas = ('numero', 'data_abertura', 'responsavel', 'prioridade', 'status')
+        chamadosTW = tb.Treeview(opcoesFR, bootstyle='info', columns=colunas, show='headings')
+        chamadosTW.grid(sticky='EW', pady=10)
+        
+        chamadosTW.heading('numero', text='Número')
+        chamadosTW.heading('data_abertura', text='Data de Abertura')
+        chamadosTW.heading('responsavel', text='Responsável')
+        chamadosTW.heading('prioridade', text='Prioridade')
+        chamadosTW.heading('status', text='Status')
+        
+        #mediaLT = tb.StringVar(boot)
+        numeros_chamados = [random.randint(1000000, 9999999) for _ in range(4)]
+        for i, num in enumerate(numeros_chamados):
+            chamadosTW.insert("", END, values=(f'{num}', f'1{i}/11/2023', 'Secretaria de Saúde', 
+                                               'Média', 'Pendente'))
+        
+        #chamadosLB = tb.Checkbutton(opcoesFR, bootstyle='default-toolbutton', text='Visualizar Chamados')
+        #chamadosLB.grid(row=0, column=0, sticky='NEW', pady=5)
+        
+        #criarLB = tb.Checkbutton(opcoesFR, bootstyle='default-toolbutton', text='Criar Chamados')
+        #criarLB.grid(row=1, column=0, sticky='NEW')
     
 
 
@@ -96,9 +109,6 @@ class TelaPadrao:
         # Frames
         telaFR = ScrolledFrame(rootFR)
         telaFR.grid(row=2, column=1, sticky='NSEW', padx=10, pady=10)
-        
-        #for child in telaFR.winfo_children():
-            #child.configure(bg='#444444')
 
         #Operação
         operacaoFR = tb.Frame(telaFR)
@@ -106,7 +116,6 @@ class TelaPadrao:
         operacaoFR.columnconfigure(0, weight=1)
         op_linha1FR = tb.Frame(operacaoFR)
         op_linha1FR.grid(row=4, sticky='EW')
-        
 
         #Investigação
         investigacaoFR = tb.Frame(telaFR)
