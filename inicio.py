@@ -7,7 +7,8 @@ from ttkbootstrap.constants import *
 from ttkbootstrap.style import Colors
 from ttkbootstrap.scrolled import ScrolledFrame
 from imagens import *
-from interface import *
+from dashboard import *
+from chamados import *
 import random
 
 
@@ -15,12 +16,11 @@ import random
 
 class TelaPadrao:
     def __init__(self):
-        self.rootPadrao = tb.Window(themename='cerculean')
+        self.rootPadrao = tb.Window(themename='flatly')
         self.rootPadrao.title('Sistema de Chamados')
         self.rootPadrao.state('zoomed')
         self.rootPadrao.columnconfigure(0, weight=1)
-        
-        
+
         
         # CABEÇALHO
         # Logo
@@ -41,33 +41,45 @@ class TelaPadrao:
         
         self.notebook.add(rootFR, image=logoIM)
         
+        # Abas
+        self.dashboardAB = Aba(TelaDashboard, self.notebook)
+        self.chamadosAB = Aba(TelaChamado, self.notebook)
+        
+        
         # COLUMN 0
-        opcoesFR = tb.Labelframe(rootFR, text='Chamados')
+        opcoesFR = tb.Labelframe(rootFR, text='Chamados', bootstyle='dark')
         opcoesFR.grid(column=0, row=2, sticky='NSEW', padx=20, pady=50)
         opcoesFR.columnconfigure(0, weight=1)
+        opcoesFR.rowconfigure(0, weight=1)
+        opcoesFR.rowconfigure(1, weight=4)
+        
+        treeviewFR = tb.Frame(opcoesFR)
+        treeviewFR.grid(row=0)
         
         #Chamados
-        colunas = ('numero', 'data_abertura', 'responsavel', 'prioridade', 'status')
-        chamadosTW = tb.Treeview(opcoesFR, bootstyle='info', columns=colunas, show='headings')
-        chamadosTW.grid(sticky='EW', pady=10)
+        colunas = ('numero', 'data_abertura', 'prioridade', 'status')
+        self.chamadosTW = tb.Treeview(treeviewFR, bootstyle='success', columns=colunas, show='headings')
+        self.chamadosTW.grid(sticky='EW')
         
-        chamadosTW.heading('numero', text='Número')
-        chamadosTW.heading('data_abertura', text='Data de Abertura')
-        chamadosTW.heading('responsavel', text='Responsável')
-        chamadosTW.heading('prioridade', text='Prioridade')
-        chamadosTW.heading('status', text='Status')
+        self.chamadosTW.heading('numero', text='Número')
+        self.chamadosTW.heading('data_abertura', text='Data de Abertura')
+        #chamadosTW.heading('responsavel', text='Responsável')
+        self.chamadosTW.heading('prioridade', text='Prioridade')
+        self.chamadosTW.heading('status', text='Status')
         
-        #mediaLT = tb.StringVar(boot)
+
         numeros_chamados = [random.randint(1000000, 9999999) for _ in range(4)]
+        
+        self.chamadosTW.bind("<ButtonRelease-1>", self.numero_selecionado)
+        
         for i, num in enumerate(numeros_chamados):
-            chamadosTW.insert("", END, values=(f'{num}', f'1{i}/11/2023', 'Secretaria de Saúde', 
-                                               'Média', 'Pendente'))
+            self.chamadosTW.insert("", END, values=(f'{num}', f'1{i}/11/2023', 
+                                               '     Média', '     Pendente'))
         
-        #chamadosLB = tb.Checkbutton(opcoesFR, bootstyle='default-toolbutton', text='Visualizar Chamados')
-        #chamadosLB.grid(row=0, column=0, sticky='NEW', pady=5)
         
-        #criarLB = tb.Checkbutton(opcoesFR, bootstyle='default-toolbutton', text='Criar Chamados')
-        #criarLB.grid(row=1, column=0, sticky='NEW')
+        #self.chamadosTW.bind("<ButtonRelease-1>", 
+                        #lambda event, num=num: chamadosAB.abrir_aba(f'Chamado '))
+        #numero = self.numero_selecionado()
     
 
 
@@ -109,289 +121,61 @@ class TelaPadrao:
         # Frames
         telaFR = ScrolledFrame(rootFR)
         telaFR.grid(row=2, column=1, sticky='NSEW', padx=10, pady=10)
-
-        #Operação
-        operacaoFR = tb.Frame(telaFR)
-        operacaoFR.grid(row=0, sticky='EW')
-        operacaoFR.columnconfigure(0, weight=1)
-        op_linha1FR = tb.Frame(operacaoFR)
-        op_linha1FR.grid(row=4, sticky='EW')
-
-        #Investigação
-        investigacaoFR = tb.Frame(telaFR)
-        investigacaoFR.grid(row=1, sticky='EW')
-        investigacaoFR.columnconfigure(0, weight=1)
-        in_linha1FR = tb.Frame(investigacaoFR)
-        in_linha1FR.grid(row=4, sticky='EW')
-        in_linha2FR = tb.Frame(investigacaoFR)
-        in_linha2FR.grid(row=5, pady=20, sticky='EW')
-        in_linha3FR = tb.Frame(investigacaoFR)
-        in_linha3FR.grid(row=6, sticky='EW')
-
-        #Manutenção
-        mautencaoFR = tb.Frame(telaFR)
-        mautencaoFR.grid(row=2, sticky='EW')
-        mautencaoFR.columnconfigure(0, weight=1)
-        mn_linha1FR = tb.Frame(mautencaoFR)
-        mn_linha1FR.grid(row=4, sticky='EW')
         
-        
+        botoesFR = tb.Frame(telaFR)
+        botoesFR.grid(row=0, sticky='EW')
+        botoesFR.columnconfigure(0, weight=1)
+        linha1FR = tb.Frame(botoesFR)
+        linha1FR.grid(row=4, sticky='EW')
         
         
         # Labels
-        #Operação
-        op_espaco1LB = tb.Label(operacaoFR)
-        op_espaco1LB.grid(row=0, pady=2)
-        subtitulo1LB = tb.Label(operacaoFR, text='xxxx', bootstyle='success')
+        espaco1LB = tb.Label(botoesFR)
+        espaco1LB.grid(row=0, pady=2)
+        subtitulo1LB = tb.Label(botoesFR, text='Funcionalidades', bootstyle='success')
         subtitulo1LB.config(font=('Calibri', 12))
         subtitulo1LB.grid(row=1)
-        op_espaco2LB = tb.Label(operacaoFR)
-        op_espaco2LB.grid(row=3, pady=3)
+        espaco2LB = tb.Label(botoesFR)
+        espaco2LB.grid(row=3, pady=3)
  
-        linha3ST = tb.Separator(operacaoFR, orient='horizontal')
+        linha3ST = tb.Separator(botoesFR, orient='horizontal')
         linha3ST.grid(row=2, sticky='EW', pady=2)
         linha3ST.config(bootstyle='success')
 
-        #Investigação
-        in_espaco1LB = tb.Label(investigacaoFR)
-        in_espaco1LB.grid(row=0)
-        subtitulo2LB = tb.Label(investigacaoFR, text='xxxx', bootstyle='success')
-        subtitulo2LB.config(font=('Calibri', 12))
-        subtitulo2LB.grid(row=1)
-        in_espaco2LB = tb.Label(investigacaoFR)
-        in_espaco2LB.grid(row=3, pady=3)
-
-        linha4ST = tb.Separator(investigacaoFR, orient='horizontal')
-        linha4ST.grid(row=2, sticky='EW', pady=2)
-        linha4ST.config(bootstyle='success')
-
-        #Manutenção
-        mn_espaco1LB = tb.Label(mautencaoFR)
-        mn_espaco1LB.grid(row=0) 
-        subtitulo3LB = tb.Label(mautencaoFR, text='xxxx', bootstyle='success')
-        subtitulo3LB.config(font=('Calibri', 12))
-        subtitulo3LB.grid(row=1)
-        mn_espaco2LB = tb.Label(mautencaoFR)
-        mn_espaco2LB.grid(row=3, pady=3)
-
-        linha5ST = tb.Separator(mautencaoFR, orient='horizontal')
-        linha5ST.grid(row=2, sticky='EW', pady=5)
-        linha5ST.config(bootstyle='success')
-
-
 
         # Botões
-        #Operação
+        dashBT = Botao(linha1FR, image=estatisticaIM, row=0, column=0, texto='Dashboards',
+                       command=lambda: self.dashboardAB.abrir_aba('Dashboards'))
+        dashBT.grid(padx=30)
         
-        camerasBT = tb.Button(op_linha1FR, image=cameraIM, padding=(15,17), style=('light', OUTLINE), 
-                              command=lambda: self.iniciar_telaCameras())
-        camerasBT.grid(row=0, column=0)
-        camerasLB = tb.Label(op_linha1FR, text='xxxx')
-        camerasLB.grid(row=1,column=0)
+        relatorioBT = Botao(linha1FR, image=historicoIM, row=0, column=1, 
+                            texto='Solicitação de\n   Relatórios')
+        relatorioBT.grid(padx=30)
         
-        mapasBT = tb.Button(op_linha1FR, image=mapaIM, padding=(15,17), style=('light', OUTLINE))
-        mapasBT.grid(row=0, column=1, padx=30)
-        mapasLB = tb.Label(op_linha1FR, text='xxxx')
-        mapasLB.grid(row=1, column=1)
+        acessoFuncBT = Botao(linha1FR, image=cartaoIM, row=0, column=2, 
+                            texto='  Acesso de\nFuncionários')
+        acessoFuncBT.grid(padx=30)
         
-        alarmesBT = tb.Button(op_linha1FR, image=alarmeIM, padding=(15,17), style=('light', OUTLINE))
-        alarmesBT.grid(row=0, column=2, padx=10)
-        alarmesLB = tb.Label(op_linha1FR, text='xxxx')
-        alarmesLB.grid(row=1,column=2)
-
-        remotoBT = tb.Button(op_linha1FR, image=remotoIM, padding=(15,17), style=('light', OUTLINE))
-        remotoBT.grid(row=0, column=3, padx=30)
-        remotoLB = tb.Label(op_linha1FR, text='xxxx')
-        remotoLB.grid(row=1, column=3)
-
-        cartaoBT = tb.Button(op_linha1FR, image=cartaoIM, padding=(15,17), style=('light', OUTLINE))
-        cartaoBT.grid(row=0, column=4, padx=15)
-        cartaoLB = tb.Label(op_linha1FR, text='xxxx')
-        cartaoLB.grid(row=1, column=4)
-
-        credenciaisBT = tb.Button(op_linha1FR, image=credencialIM, padding=(15,17), style=('light', OUTLINE))
-        credenciaisBT.grid(row=0, column=5, padx=25)
-        credenciaisLB = tb.Label(op_linha1FR, text='xxxx')
-        credenciaisLB.grid(row=1, column=5)
-
-        visitantesBT = tb.Button(op_linha1FR, image=visitanteIM, padding=(15,17), style=('light', OUTLINE))
-        visitantesBT.grid(row=0, column=6, padx=10)
-        visitantesLB = tb.Label(op_linha1FR, text='xxxx')
-        visitantesLB.grid(row=1, column=6)
-
-        pessoasBT = tb.Button(op_linha1FR, image=pessoaIM, padding=(15,17), style=('light', OUTLINE))
-        pessoasBT.grid(row=0, column=7, padx=30)
-        pessoasLB = tb.Label(op_linha1FR, text='xxxx')
-        pessoasLB.grid(row=1, column=7)
-
-        procuradosBT = tb.Button(op_linha1FR, image=procuradoIM, padding=(15,17),style=('light', OUTLINE))
-        procuradosBT.grid(row=0, column=8)
-        procuradosLB = tb.Label(op_linha1FR, text='xxxx')
-        procuradosLB.grid(row=1, column=8)
-
-        #Investigação
-        repositoriosBT = tb.Button(in_linha1FR, image=repositorioIM, padding=(15,17), style=('light', OUTLINE))
-        repositoriosBT.grid(row=0, column=0)
-        repositoriosLB = tb.Label(in_linha1FR, text='xxxx')
-        repositoriosLB.grid(row=1, column=0)
+        perfilBT = Botao(linha1FR, image=titularIM, row=0, column=3, 
+                            texto='Configurações\n    de Perfil')
+        perfilBT.grid(padx=30)
         
-        eventosBT = tb.Button(in_linha1FR, image=eventoIM, padding=(15,17), style=('light', OUTLINE))
-        eventosBT.grid(row=0, column=1, padx=30)
-        eventosLB = tb.Label(in_linha1FR, text='xxxx')
-        eventosLB.grid(row=1, column=1)
+        dadosBT = Botao(linha1FR, image=movimentoIM, row=0, column=4, 
+                            texto='Solicitação\n de Dados')
+        dadosBT.grid(padx=30)
 
-        exploradorBT = tb.Button(in_linha1FR, image=exploradorIM, padding=(15,17), style=('light', OUTLINE))
-        exploradorBT.grid(row=0, column=2, padx=10)
-        exploradorLB = tb.Label(in_linha1FR, text='xxxx')
-        exploradorLB.grid(row=1, column=2)
-
-        marcadoresBT = tb.Button(in_linha1FR, image=marcadorIM, padding=(15,17), style=('light', OUTLINE))
-        marcadoresBT.grid(row=0, column=3, padx=30)
-        marcadoresLB = tb.Label(in_linha1FR, text='xxxx')
-        marcadoresLB.grid(row=1, column=3)
-
-        movimentosBT = tb.Button(in_linha1FR, image=movimentoIM, padding=(15,17), style=('light', OUTLINE))
-        movimentosBT.grid(row=0, column=4, padx=15)
-        movimentosLB = tb.Label(in_linha1FR, text='xxxx')
-        movimentosLB.grid(row=1, column=4)
-
-        buscaBT = tb.Button(in_linha1FR, image=buscaIM, padding=(15,17), style=('light', OUTLINE))
-        buscaBT.grid(row=0, column=5, padx=25)
-        buscaLB = tb.Label(in_linha1FR, text='xxxx')
-        buscaLB.grid(row=1, column=5)
-
-        areaBT = tb.Button(in_linha1FR, image=areaIM, padding=(15,17), style=('light', OUTLINE))
-        areaBT.grid(row=0, column=6, padx=12)
-        areaLB = tb.Label(in_linha1FR, text='xxxx')
-        areaLB.grid(row=1, column=6)
-
-        portaBT = tb.Button(in_linha1FR, image=portaIM, padding=(15,17), style=('light', OUTLINE))
-        portaBT.grid(row=0, column=7, padx=25)
-        portaLB = tb.Label(in_linha1FR, text='xxxx')
-        portaLB.grid(row=1, column=7)
-
-        titularesBT = tb.Button(in_linha1FR, image=titularIM, padding=(15,17), style=('light', OUTLINE))
-        titularesBT.grid(row=0, column=8, padx=5)
-        titularesLB = tb.Label(in_linha1FR, text='xxxx')
-        titularesLB.grid(row=1, column=8)
-
-        atVisitantesBT = tb.Button(in_linha2FR, image=atVisitanteIM, padding=(15,17), style=('light', OUTLINE))
-        atVisitantesBT.grid(row=0, column=0)
-        atVisitantesLB = tb.Label(in_linha2FR, text='xxxx')
-        atVisitantesLB.grid(row=1, column=1)
-
-        presencaBT = tb.Button(in_linha2FR, image=presencaIM, padding=(15,17), style=('light', OUTLINE))
-        presencaBT.grid(row=0, column=1, padx=30)
-        presencaLB = tb.Label(in_linha2FR, text='xxxx')
-        presencaLB.grid(row=1, column=0)
-
-        horasBT = tb.Button(in_linha2FR, image=horaIM, padding=(15,17), style=('light', OUTLINE))
-        horasBT.grid(row=0, column=2, padx=10)
-        horasLB = tb.Label(in_linha2FR, text='xxxx')
-        horasLB.grid(row=1, column=2)
-
-        atCredenciaisBT = tb.Button(in_linha2FR, image=atCredencialIM, padding=(15,17), style=('light', OUTLINE))
-        atCredenciaisBT.grid(row=0, column=3, padx=30)
-        atCredenciaisLB = tb.Label(in_linha2FR, text='xxxx')
-        atCredenciaisLB.grid(row=1, column=3)
-
-        histoticoBT = tb.Button(in_linha2FR, image=historicoIM, padding=(15,17), style=('light', OUTLINE))
-        histoticoBT.grid(row=0, column=4, padx=15)
-        historicoLB = tb.Label(in_linha2FR, text='xxxx')
-        historicoLB.grid(row=1, column=4)
-
-        elevadorBT = tb.Button(in_linha2FR, image=elevadorIM, padding=(15,17), style=('light', OUTLINE))
-        elevadorBT.grid(row=0, column=5, padx=25)
-        elevadorLB = tb.Label(in_linha2FR, text='xxxx')
-        elevadorLB.grid(row=1, column=5)
-
-        visitaBT = tb.Button(in_linha2FR, image=visitaIM, padding=(15,17), style=('light', OUTLINE))
-        visitaBT.grid(row=0, column=6, padx=10)
-        visitaLB = tb.Label(in_linha2FR, text='xxxx')
-        visitaLB.grid(row=1, column=6)
-
-        alertasBT = tb.Button(in_linha2FR, image=alertaIM, padding=(15,17), style=('light', OUTLINE))
-        alertasBT.grid(row=0, column=7, padx=30)
-        alertasLB = tb.Label(in_linha2FR, text='xxxx')
-        alertasLB.grid(row=1, column=7)
-        
-        alertasMultiBT = tb.Button(in_linha2FR, image=alertaMultiIM, padding=(15,17),style=('light', OUTLINE))
-        alertasMultiBT.grid(row=0, column=8)
-        alertasMultiLB = tb.Label(in_linha2FR, text='xxxx')
-        alertasMultiLB.grid(row=1, column=8)
-
-        leiturasBT = tb.Button(in_linha3FR, image=leituraIM, padding=(15,17), style=('light', OUTLINE))
-        leiturasBT.grid(row=0, column=0)
-        leiturasLB = tb.Label(in_linha3FR, text='xxxx')
-        leiturasLB.grid(row=1, column=0)
-
-        leiturasMultiBT = tb.Button(in_linha3FR, image=leituraIM, padding=(15,17), style=('light', OUTLINE))
-        leiturasMultiBT.grid(row=0, column=1, padx=30)
-        leiturasMultiLB = tb.Label(in_linha3FR, text='xxxx')
-        leiturasMultiLB.grid(row=1, column=1)
-
-        #Manutenção
-        statusBT = tb.Button(mn_linha1FR, image=statusIM, padding=(15,17), style=('light', OUTLINE))
-        statusBT.grid(row=0, column=0)
-        statusLB = tb.Label(mn_linha1FR, text='xxxx')
-        statusLB.grid(row=1, column=0)
-
-        auditoriaBT = tb.Button(mn_linha1FR, image=auditoriaIM, padding=(15,17), style=('light', OUTLINE))
-        auditoriaBT.grid(row=0, column=1, padx=30)
-        auditoiaLB = tb.Label(mn_linha1FR, text='xxxx')
-        auditoiaLB.grid(row=1, column=1)
-
-        estatisticaBT = tb.Button(mn_linha1FR, image=estatisticaIM, padding=(15,17), style=('light', OUTLINE))
-        estatisticaBT.grid(row=0, column=2, padx=10)
-        estatisticaLB = tb.Label(mn_linha1FR, text='xxxx')
-        estatisticaLB.grid(row=1, column=2)
-
-        permissaoBT = tb.Button(mn_linha1FR, image=cartaoIM, padding=(15,17), style=('light', OUTLINE))
-        permissaoBT.grid(row=0, column=3, padx=30)
-        permissaoLB = tb.Label(mn_linha1FR, text='xxxx')
-        permissaoLB.grid(row=1, column=3)
-
-        diagnosticoBT = tb.Button(mn_linha1FR, image=portaIM, padding=(15,17), style=('light', OUTLINE))
-        diagnosticoBT.grid(row=0, column=4, padx=15)
-        diagnosticoLB = tb.Label(mn_linha1FR, text='xxxx')
-        diagnosticoLB.grid(row=1, column=4)
-
-        regraBT = tb.Button(mn_linha1FR, image=atCredencialIM, padding=(15,17), style=('light', OUTLINE))
-        regraBT.grid(row=0, column=5, padx=30)
-        regrasLB = tb.Label(mn_linha1FR, text='xxxx')
-        regrasLB.grid(row=1, column=5)
-        
-        testeBT = Botao(mn_linha1FR, texto='Teste', row=0, column=6)
-        testeBT.grid()
         
         self.aba_adicionada = False
         self.rootPadrao.mainloop()
-
-    def iniciar_telaCameras(self):
-        # Dicionário para mapear abas para seus botões de fechamento
-        self.aba_botoes = {}
         
-        if not self.aba_adicionada:
-            self.aba_adicionada = True
-            tela_cam = tb.Frame(self.notebook)
-            tela_cam.grid(sticky='NSEW')
-            tela_cam.columnconfigure(0, weight=1)   
-            tela_cam.rowconfigure((1), weight=1)
+    def numero_selecionado(self, event):
+        selected_items = self.chamadosTW.selection()
+        if selected_items:
+            for item in selected_items:
+                values = self.chamadosTW.item(item, 'values')
+                numero = values[0]
+            self.chamadosAB.abrir_aba(f'Chamado {numero}')
             
-            self.notebook.add(tela_cam, text='xxxx')
-            fecharBT = ttk.Checkbutton(tela_cam, text="X", command=lambda tela_cam=tela_cam: self.fechar_aba(tela_cam), 
-                                  bootstyle="light-toolbutton",
-                                  padding=(5,2))
-            fecharBT.grid(row=0, sticky="ne")
-
-            self.aba_botoes[tela_cam] = fecharBT
-            self.tela = TelaAdicional(tela_cam)
-
-    def fechar_aba(self, aba):
-        indice = self.notebook.index(aba)
-        if indice != -1:
-            self.notebook.hide(indice)
-            self.aba_adicionada = False
         
 class Botao(tb.Button):
     def __init__(self, container, texto, row, column, **kwargs):
@@ -405,5 +189,43 @@ class Botao(tb.Button):
         
         botaoLB = tb.Label(container, text=texto)
         botaoLB.grid(row=(self.row + 1), column=self.column)
+        
+        
+        
+class Aba:
+    def __init__(self, funcionalidade, notebook):
+        self.aba_botoes = {}
+        #self.aba_adicionada = False
+        self.funcionalidade = funcionalidade
+        self.notebook = notebook
+        
+    def abrir_aba(self, nome_aba):
+        #if not self.aba_adicionada:
+            #self.aba_adicionada = True
+        frame = tb.Frame(self.notebook)
+        frame.grid(sticky='NSEW')
+        frame.columnconfigure(0, weight=1)   
+        frame.rowconfigure((1), weight=1)
+            
+        self.notebook.add(frame, text=nome_aba)
+            
+        # botão de fechar aba
+        fecharBT = ttk.Checkbutton(frame, text="X", command=lambda tela_cam=frame: self.fechar_aba(tela_cam), 
+                                  bootstyle="light-toolbutton",
+                                  padding=(5,2))
+        fecharBT.grid(row=0, sticky="ne")
+
+        self.aba_botoes[frame] = fecharBT
+            
+        
+        # adiciona tela de funcionalidade
+        self.tela = self.funcionalidade(frame)
+            
+    def fechar_aba(self, aba):
+        indice = self.notebook.index(aba)
+        if indice != -1:
+            self.notebook.hide(indice)
+            #self.aba_adicionada = False 
+
 
 teste = TelaPadrao()
