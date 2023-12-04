@@ -24,7 +24,7 @@ class TelaPadrao:
         
         # CABEÇALHO
         # Logo
-        imagem1= Image.open("C:/Users/ferna/sistema_chamados/imgs/sis_logo.png").resize((45,35))
+        imagem1= Image.open("C:/Users/ferna/sistema_chamados/imgs/logo_maranhao.png").resize((130,40))
         logoIM =ImageTk.PhotoImage(imagem1)
         
         # Frame Pirncipal
