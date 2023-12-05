@@ -73,49 +73,19 @@ class TelaPadrao:
         self.chamadosTW.bind("<ButtonRelease-1>", self.numero_selecionado)
         
         for i, num in enumerate(numeros_chamados):
-            self.chamadosTW.insert("", END, values=(f'{num}', f'1{i}/11/2023', 
+            self.chamadosTW.insert("", END, values=(f'{num}', f'1{i}/05/2023', 
                                                '     Média', '     Pendente'))
-        
-        
-        #self.chamadosTW.bind("<ButtonRelease-1>", 
-                        #lambda event, num=num: chamadosAB.abrir_aba(f'Chamado '))
-        #numero = self.numero_selecionado()
+    
     
 
 
         # COLUMN 1
         # Imagens
-        cameraIM = ImageTk.PhotoImage(imagem2)
-        mapaIM = ImageTk.PhotoImage(imagem3)
-        alarmeIM = ImageTk.PhotoImage(imagem4)
-        remotoIM = ImageTk.PhotoImage(imagem5)
-        cartaoIM = ImageTk.PhotoImage(imagem6)
-        credencialIM = ImageTk.PhotoImage(imagem7)
-        visitanteIM = ImageTk.PhotoImage(imagem8)
-        pessoaIM = ImageTk.PhotoImage(imagem9)
-        procuradoIM = ImageTk.PhotoImage(imagem10)
-        repositorioIM = ImageTk.PhotoImage(imagem11)
-        marcadorIM = ImageTk.PhotoImage(imagem12)
-        movimentoIM = ImageTk.PhotoImage(imagem13)
-        eventoIM = ImageTk.PhotoImage(imagem14)
-        exploradorIM = ImageTk.PhotoImage(imagem15)
-        buscaIM = ImageTk.PhotoImage(imagem16)
-        areaIM = ImageTk.PhotoImage(imagem17)
-        portaIM = ImageTk.PhotoImage(imagem18)
-        titularIM = ImageTk.PhotoImage(imagem19)
-        atVisitanteIM = ImageTk.PhotoImage(imagem20)
-        presencaIM = ImageTk.PhotoImage(imagem21)
-        horaIM = ImageTk.PhotoImage(imagem22)
-        atCredencialIM = ImageTk.PhotoImage(imagem23)
-        historicoIM = ImageTk.PhotoImage(imagem24)
-        elevadorIM = ImageTk.PhotoImage(imagem25)
-        visitaIM = ImageTk.PhotoImage(imagem26)
-        alertaIM = ImageTk.PhotoImage(imagem27)
-        alertaMultiIM = ImageTk.PhotoImage(imagem28)
-        leituraIM = ImageTk.PhotoImage(imagem29)
-        statusIM = ImageTk.PhotoImage(imagem30)
-        auditoriaIM = ImageTk.PhotoImage(imagem31)
-        estatisticaIM = ImageTk.PhotoImage(imagem32)
+        cartaoIM = ImageTk.PhotoImage(imagem1)
+        movimentoIM = ImageTk.PhotoImage(imagem2)
+        titularIM = ImageTk.PhotoImage(imagem3)
+        historicoIM = ImageTk.PhotoImage(imagem3)
+        estatisticaIM = ImageTk.PhotoImage(imagem4)
 
 
         # Frames
