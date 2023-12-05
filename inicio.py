@@ -24,8 +24,8 @@ class TelaPadrao:
         
         # CABEÇALHO
         # Logo
-        imagem1= Image.open("C:/Users/ferna/sistema_chamados/imgs/logo_maranhao.png").resize((130,40))
-        logoIM =ImageTk.PhotoImage(imagem1)
+        imagem = Image.open("C:/Users/ferna/sistema_chamados/imgs/logo_maranhao.png").resize((130,40))
+        logoIM =ImageTk.PhotoImage(imagem)
         
         # Frame Pirncipal
         self.notebook = tb.Notebook(self.rootPadrao)
@@ -84,8 +84,8 @@ class TelaPadrao:
         cartaoIM = ImageTk.PhotoImage(imagem1)
         movimentoIM = ImageTk.PhotoImage(imagem2)
         titularIM = ImageTk.PhotoImage(imagem3)
-        historicoIM = ImageTk.PhotoImage(imagem3)
-        estatisticaIM = ImageTk.PhotoImage(imagem4)
+        historicoIM = ImageTk.PhotoImage(imagem4)
+        dashboardIM = ImageTk.PhotoImage(imagem5)
 
 
         # Frames
@@ -114,7 +114,7 @@ class TelaPadrao:
 
 
         # Botões
-        dashBT = Botao(linha1FR, image=estatisticaIM, row=0, column=0, texto='Dashboards',
+        dashBT = Botao(linha1FR, image=dashboardIM, row=0, column=0, texto='Dashboards',
                        command=lambda: self.dashboardAB.abrir_aba('Dashboards'))
         dashBT.grid(padx=30)
         
