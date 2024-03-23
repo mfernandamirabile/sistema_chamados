@@ -26,7 +26,7 @@ O código fonte do sistema está organizado em:
 1. **app.py**: Contém a implementação da interface gráfica e a lógica principal do sistema, incluindo a definição das classes e métodos responsáveis por gerenciar as diferentes funcionalidades do sistema.
 2. **chamados.py**: Contém a implementação das funcionalidades relacionadas aos chamados, incluindo as trocas de mensagem, responsável e detalhes do chamado. Esse módulo ainda não está completo e contém somente uma demonstração de como seria essa funcionalidade.
 3. **dashboards.py**: Contém o módulo ainda não inciado de análise dos chamados.
-4. **imgens.py**: Contém o carregamento das imagens utilizados no app.
+4. **imgens.py**: Contém o carregamento das imagens utilizadas no app.
 
 ## Como Executar o Sistema
 
