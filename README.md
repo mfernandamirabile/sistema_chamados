@@ -46,12 +46,12 @@ Este projeto é licenciado sob a [MIT License](LICENSE).
 
 ## Nomenclatura Visual:
 
-`frame`: Termina com FR.
-`label`: Termina com LB.
-`imagens`: Termina com IM.
-`botão`: Termina com BT.
-`separador`: Termina com ST.
-`treeview`: Termina com TW.
+- `frame`: Termina com FR.
+- `label`: Termina com LB.
+- `imagens`: Termina com IM.
+- `botão`: Termina com BT.
+- `separador`: Termina com ST.
+- `treeview`: Termina com TW.
 
 ## Requisitos:
 
