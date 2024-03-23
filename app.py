@@ -86,17 +86,22 @@ class TelaPadrao:
         titularIM = ImageTk.PhotoImage(imagem3)
         historicoIM = ImageTk.PhotoImage(imagem4)
         dashboardIM = ImageTk.PhotoImage(imagem5)
+        maisIM = ImageTk.PhotoImage(imagem6)
 
 
         # Frames
         telaFR = ScrolledFrame(rootFR)
-        telaFR.grid(row=2, column=1, sticky='NSEW', padx=10, pady=10)
+        telaFR.grid(row=2, column=1, sticky='NSEW', padx=20, pady=10)
+        telaFR.columnconfigure(0, weight=1)
         
-        botoesFR = tb.Frame(telaFR)
-        botoesFR.grid(row=0, sticky='EW')
+        containerFR = tb.Frame(telaFR)
+        containerFR.grid(row=0, column=0, sticky='EW')
+        containerFR.columnconfigure(0, weight=1)
+        botoesFR = tb.Frame(containerFR)
+        botoesFR.grid(row=0, column=0, sticky='EW', padx=20)
         botoesFR.columnconfigure(0, weight=1)
         linha1FR = tb.Frame(botoesFR)
-        linha1FR.grid(row=4, sticky='EW')
+        linha1FR.grid(row=4)
         
         
         # Labels
@@ -109,28 +114,31 @@ class TelaPadrao:
         espaco2LB.grid(row=3, pady=3)
  
         linha3ST = tb.Separator(botoesFR, orient='horizontal')
-        linha3ST.grid(row=2, sticky='EW', pady=2)
+        linha3ST.grid(row=2, column=0, sticky='EW', pady=2)
         linha3ST.config(bootstyle='success')
 
 
         # Botões
-        dashBT = Botao(linha1FR, image=dashboardIM, row=0, column=0, texto='Dashboards',
+        criar_chmadoBT = Botao(linha1FR, image=maisIM, row=0, column=0, texto='Criar chamado')
+        criar_chmadoBT.grid(padx=30)
+        
+        dashBT = Botao(linha1FR, image=dashboardIM, row=0, column=1, texto='Dashboards',
                        command=lambda: self.dashboardAB.abrir_aba('Dashboards'))
         dashBT.grid(padx=30)
         
-        relatorioBT = Botao(linha1FR, image=historicoIM, row=0, column=1, 
+        relatorioBT = Botao(linha1FR, image=historicoIM, row=0, column=2, 
                             texto='Solicitação de\n   Relatórios')
         relatorioBT.grid(padx=30)
         
-        acessoFuncBT = Botao(linha1FR, image=cartaoIM, row=0, column=2, 
+        acessoFuncBT = Botao(linha1FR, image=cartaoIM, row=0, column=3, 
                             texto='  Acesso de\nFuncionários')
         acessoFuncBT.grid(padx=30)
         
-        perfilBT = Botao(linha1FR, image=titularIM, row=0, column=3, 
+        perfilBT = Botao(linha1FR, image=titularIM, row=0, column=4, 
                             texto='Configurações\n    de Perfil')
         perfilBT.grid(padx=30)
         
-        dadosBT = Botao(linha1FR, image=movimentoIM, row=0, column=4, 
+        dadosBT = Botao(linha1FR, image=movimentoIM, row=0, column=5, 
                             texto='Solicitação\n de Dados')
         dadosBT.grid(padx=30)
 
@@ -160,7 +168,7 @@ class Botao(tb.Button):
         botaoLB = tb.Label(container, text=texto)
         botaoLB.grid(row=(self.row + 1), column=self.column)
         
-        
+
         
 class Aba:
     def __init__(self, funcionalidade, notebook):
